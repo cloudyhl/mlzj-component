@@ -4,6 +4,10 @@ import com.mlzj.component.mq.common.User;
 import com.mlzj.component.mq.common.protocol.MlzjMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author yhl
@@ -11,32 +15,33 @@ import io.netty.channel.SimpleChannelInboundHandler;
  */
 public class ClientHandler extends SimpleChannelInboundHandler {
 
+    Logger logger = LoggerFactory.getLogger(ClientHandler.class);
+
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         CtxUtils.setCtx(ctx);
+
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        User user = new User("12", 2,User.class);
-        MlzjMessage<User> userMlzjMessage =new MlzjMessage<>();
-        userMlzjMessage.setMessageId("12321");
-        userMlzjMessage.setData(user);
-        userMlzjMessage.setQueue("qqq");
-        userMlzjMessage.setTopic("topic");
-        for (int index = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ; index < 10; index++) {
-            ctx.writeAndFlush(userMlzjMessage);
-        }
+        MlzjMessage mlzjMessage = new MlzjMessage();
+        mlzjMessage.setType("1");
+        ctx.writeAndFlush(mlzjMessage);
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object o) throws Exception {
-        String s = (String) o;
-        System.out.println(s);
+        System.out.println(o);
     }
 
 
-
+    @Override
+    @SuppressWarnings("deprecation")
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+            throws Exception {
+        logger.error("发生异常", cause);
+    }
 
 }

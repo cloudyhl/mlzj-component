@@ -1,6 +1,7 @@
 package com.mlzj.component.mq.server.demo;
 
 import com.mlzj.component.mq.common.handler.ProtostuffMessageDecoder;
+import com.mlzj.component.mq.common.handler.ProtostuffMessageEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -25,10 +26,13 @@ public class NettyServer {
                     .childHandler(new ChannelInitializer(){
                         @Override
                         protected void initChannel(Channel ch) throws Exception {
-                            ch.pipeline().addLast(new IdleStateHandler(5,5,10));
+                            ch.pipeline().addLast(new IdleStateHandler(3,3,10));
                             ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,0,2,0,2));
                             ch.pipeline().addLast(new LengthFieldPrepender(2));
                             ch.pipeline().addLast(new ProtostuffMessageDecoder());
+                            ch.pipeline().addLast(new ProtostuffMessageEncoder());
+                            ch.pipeline().addLast("loginHandler", new LoginHandler());
+                            ch.pipeline().addLast(new HeartbeatHandler());
                             ch.pipeline().addLast(new ServerHandler());
                         }
                     })

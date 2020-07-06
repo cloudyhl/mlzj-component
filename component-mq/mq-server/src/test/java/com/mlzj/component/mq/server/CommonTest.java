@@ -1,6 +1,7 @@
 package com.mlzj.component.mq.server;
 
 import com.mlzj.component.mq.common.User;
+import com.mlzj.component.mq.common.protocol.MlzjMessage;
 import com.mlzj.component.mq.common.utils.ProtostuffUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,16 @@ public class CommonTest {
             reentrantLock.lock();
             System.out.println(2);
         }).start();
+    }
+    @Test
+    public void testLength(){
+        MlzjMessage<User> mlzjMessage= new MlzjMessage<>();
+        mlzjMessage.setTopic("123");
+        System.out.println(ProtostuffUtils.serialize(mlzjMessage).length);
+        MlzjMessage<User> mlzjMessag1 = new MlzjMessage<>();
+        mlzjMessag1.setTopic("1234");
+        mlzjMessag1.setQueue("2312231");
+        System.out.println(ProtostuffUtils.serialize(mlzjMessag1).length);
     }
 
 }

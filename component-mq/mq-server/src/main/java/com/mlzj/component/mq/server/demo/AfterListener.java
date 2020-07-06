@@ -24,12 +24,10 @@ public class AfterListener implements GenericFutureListener<ChannelFuture> {
 
     @Override
     public void operationComplete(ChannelFuture future) throws Exception {
-        TimeUnit.SECONDS.sleep(3);
         ChannelPromise channelPromise = (DefaultChannelPromise) future;
         System.out.println(channelPromise.setUncancellable());
         System.out.println(channelPromise.isSuccess());
         System.out.println(user);
         System.out.println(future.channel().id().asLongText());
-        channelPromise.channel().writeAndFlush(Unpooled.copiedBuffer("hahaha".getBytes()));
     }
 }

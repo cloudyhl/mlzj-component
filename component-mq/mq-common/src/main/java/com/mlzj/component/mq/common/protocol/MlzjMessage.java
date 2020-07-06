@@ -15,6 +15,11 @@ public class MlzjMessage<T> {
     private String messageId;
 
     /**
+     * 消息类型
+     */
+    private String type;
+
+    /**
      * 消息主题
      */
     private String topic;

@@ -13,13 +13,17 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 服务端handler
  * @author yhl
  * @date 2020/5/14
  */
-public class ServerHandler<T> extends ChannelInboundHandlerAdapter {
+public class ServerHandler extends ChannelInboundHandlerAdapter {
+
+    private Logger logger = LoggerFactory.getLogger(ServerHandler.class);
 
     private ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     EventExecutor eventExecutor = new DefaultEventExecutor();
@@ -31,9 +35,10 @@ public class ServerHandler<T> extends ChannelInboundHandlerAdapter {
         System.out.println(user);
         DefaultChannelPromise defaultChannelPromise = new DefaultChannelPromise(ctx.channel(),eventExecutor);
         defaultChannelPromise.addListener(new AfterListener(user));
-
-        ChannelFuture channelFuture = ctx.writeAndFlush(Unpooled.copiedBuffer("good".getBytes()),defaultChannelPromise);
-        System.out.println("===");
+        MlzjMessage mlzjMessage = new MlzjMessage();
+        mlzjMessage.setQueue("2222222");
+        mlzjMessage.setType("2");
+        ctx.writeAndFlush(mlzjMessage,defaultChannelPromise);
     }
 
     @Override
@@ -57,7 +62,13 @@ public class ServerHandler<T> extends ChannelInboundHandlerAdapter {
                     System.out.println("");
                 }
             }
-            //ctx.channel().close();
+            ctx.channel().close();
         }
+    }
+    @Override
+    @SuppressWarnings("deprecation")
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+            throws Exception {
+        logger.error("发生异常", cause);
     }
 }
