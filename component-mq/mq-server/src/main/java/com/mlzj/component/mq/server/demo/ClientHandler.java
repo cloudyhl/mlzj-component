@@ -27,7 +27,7 @@ public class ClientHandler extends SimpleChannelInboundHandler {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         MlzjMessage mlzjMessage = new MlzjMessage();
-        mlzjMessage.setType("1");
+        mlzjMessage.setType(1);
         ctx.writeAndFlush(mlzjMessage);
     }
 

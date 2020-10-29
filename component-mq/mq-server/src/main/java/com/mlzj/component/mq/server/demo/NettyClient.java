@@ -1,8 +1,10 @@
 package com.mlzj.component.mq.server.demo;
 
 import com.mlzj.component.mq.common.User;
-import com.mlzj.component.mq.common.handler.ProtostuffMessageDecoder;
-import com.mlzj.component.mq.common.handler.ProtostuffMessageEncoder;
+import com.mlzj.component.mq.common.constants.MessageTypeEnum;
+import com.mlzj.component.mq.common.coder.ProtostuffMessageDecoder;
+import com.mlzj.component.mq.common.coder.ProtostuffMessageEncoder;
+import com.mlzj.component.mq.common.handler.HeartBeatClientHandler;
 import com.mlzj.component.mq.common.protocol.MlzjMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -10,9 +12,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.logging.LoggingHandler;
-import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.InetSocketAddress;
@@ -43,7 +42,7 @@ public class NettyClient {
                     })
                     .option(ChannelOption.SO_BACKLOG, 10)
                     .option(ChannelOption.SO_REUSEADDR,true);
-            ChannelFuture sync = bootstrap.connect(new InetSocketAddress("127.0.0.1", 22230)).sync().addListener((GenericFutureListener<ChannelFuture>) future -> {
+            ChannelFuture sync = bootstrap.connect(new InetSocketAddress("127.0.0.1", 22300)).sync().addListener((GenericFutureListener<ChannelFuture>) future -> {
                 if (future.isSuccess()) {
                     User user = new User("12", 2,User.class);
                     MlzjMessage<User> userMlzjMessage =new MlzjMessage<>();
@@ -51,7 +50,7 @@ public class NettyClient {
                     userMlzjMessage.setData(user);
                     userMlzjMessage.setQueue("qqq");
                     userMlzjMessage.setTopic("topic");
-                    userMlzjMessage.setType("2");
+                    userMlzjMessage.setType(MessageTypeEnum.MESSAGE.getCode());
                     for (int index = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ; index < 10; index++) {
                         future.channel().writeAndFlush(userMlzjMessage);
                     }

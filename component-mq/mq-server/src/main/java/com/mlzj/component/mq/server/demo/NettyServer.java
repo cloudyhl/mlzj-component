@@ -1,7 +1,8 @@
 package com.mlzj.component.mq.server.demo;
 
-import com.mlzj.component.mq.common.handler.ProtostuffMessageDecoder;
-import com.mlzj.component.mq.common.handler.ProtostuffMessageEncoder;
+import com.mlzj.component.mq.common.coder.ProtostuffMessageDecoder;
+import com.mlzj.component.mq.common.coder.ProtostuffMessageEncoder;
+import com.mlzj.component.mq.server.channelhandler.LoginHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

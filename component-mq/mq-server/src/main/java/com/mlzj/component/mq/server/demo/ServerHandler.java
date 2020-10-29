@@ -37,7 +37,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         defaultChannelPromise.addListener(new AfterListener(user));
         MlzjMessage mlzjMessage = new MlzjMessage();
         mlzjMessage.setQueue("2222222");
-        mlzjMessage.setType("2");
+        mlzjMessage.setType(2);
         ctx.writeAndFlush(mlzjMessage,defaultChannelPromise);
     }
 

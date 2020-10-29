@@ -1,5 +1,6 @@
 package com.mlzj.component.mq.server.demo;
 
+import com.mlzj.component.mq.common.constants.MessageTypeEnum;
 import com.mlzj.component.mq.common.protocol.MlzjMessage;
 import com.mlzj.component.mq.common.utils.ActuatorUtils;
 import io.netty.channel.ChannelHandlerContext;
@@ -8,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,15 +22,13 @@ public class HeartbeatHandler extends SimpleChannelInboundHandler<MlzjMessage> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MlzjMessage msg) throws Exception {
-        if (msg.getType().equals("3")){
-            System.out.println("get heartBeat");
-            ActuatorUtils.isTrue(logger.isDebugEnabled(),()->logger.debug(ctx.channel().remoteAddress()+"-----------> HeartBeat"));
-        } else if (msg.getType().equals("2")){
+        if (Objects.equals(msg.getType(), MessageTypeEnum.HEART.getCode())){
+            ActuatorUtils.isTrue(logger.isDebugEnabled(),()->logger.debug("{}-----------> HeartBeat",ctx.channel().remoteAddress()));
+        } else if (Objects.equals(msg.getType(), MessageTypeEnum.MESSAGE.getCode())){
             ctx.fireChannelRead(msg);
         }
-        if (msg.getType().equals("1")){
-            System.out.println("heartBeat start");
-            ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx),0,1, TimeUnit.SECONDS);
+        if (Objects.equals(msg.getType(), MessageTypeEnum.LOGIN.getCode())){
+            ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx),0,3, TimeUnit.SECONDS);
         }
 
     }
@@ -41,7 +41,7 @@ public class HeartbeatHandler extends SimpleChannelInboundHandler<MlzjMessage> {
         @Override
         public void run() {
             MlzjMessage mlzjMessage = new MlzjMessage();
-            mlzjMessage.setType("3");
+            mlzjMessage.setType(MessageTypeEnum.HEART.getCode());
             ctx.writeAndFlush(mlzjMessage);
         }
     }

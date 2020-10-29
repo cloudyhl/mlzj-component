@@ -1,7 +1,7 @@
 package com.mlzj.component.mq.server.demo.rpc;
 
-import com.mlzj.component.mq.common.handler.ProtostuffCommonDecoder;
-import com.mlzj.component.mq.common.handler.ProtostuffCommonEncoder;
+import com.mlzj.component.mq.common.coder.ProtostuffCommonDecoder;
+import com.mlzj.component.mq.common.coder.ProtostuffCommonEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

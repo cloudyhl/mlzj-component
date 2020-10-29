@@ -1,2 +1,8 @@
 server:
   port: 8888
+mlzj:
+  mq:
+    readerIdleTimeSeconds: 10
+    writerIdleTimeSeconds: 10
+    allIdleTimeSeconds: 20
+    server-port: 22300

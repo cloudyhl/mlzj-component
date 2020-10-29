@@ -17,7 +17,7 @@ public class MlzjMessage<T> {
     /**
      * 消息类型
      */
-    private String type;
+    private Integer type;
 
     /**
      * 消息主题

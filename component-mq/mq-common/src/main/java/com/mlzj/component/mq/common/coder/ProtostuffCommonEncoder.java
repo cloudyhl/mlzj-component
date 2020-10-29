@@ -1,4 +1,4 @@
-package com.mlzj.component.mq.common.handler;
+package com.mlzj.component.mq.common.coder;
 
 import com.mlzj.component.mq.common.utils.ProtostuffUtils;
 import io.netty.buffer.Unpooled;
