@@ -1,6 +1,7 @@
 package com.mlzj.component.mq.server.demo;
 
 import com.mlzj.component.mq.common.User;
+import com.mlzj.component.mq.common.constants.MessageModeEnum;
 import com.mlzj.component.mq.common.constants.MessageTypeEnum;
 import com.mlzj.component.mq.common.coder.ProtostuffMessageDecoder;
 import com.mlzj.component.mq.common.coder.ProtostuffMessageEncoder;
@@ -48,15 +49,19 @@ public class NettyClient {
                     MlzjMessage<User> userMlzjMessage =new MlzjMessage<>();
                     userMlzjMessage.setMessageId("12321");
                     userMlzjMessage.setData(user);
-                    userMlzjMessage.setQueue("qqq");
-                    userMlzjMessage.setTopic("topic");
+                    userMlzjMessage.setQueue("queue");
                     userMlzjMessage.setType(MessageTypeEnum.MESSAGE.getCode());
-                    for (int index = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ; index < 10; index++) {
-                        future.channel().writeAndFlush(userMlzjMessage);
-                    }
+//                    for (int index = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ; index < 10; index++) {
+//                        future.channel().writeAndFlush(userMlzjMessage);
+//                    }
                 }
             });
-
+            MlzjMessage<String> mlzjMessage = new MlzjMessage<>();
+            mlzjMessage.setQueue("queue");
+            mlzjMessage.setMode(MessageModeEnum.QUEUE.getMode());
+            mlzjMessage.setData("hello world");
+            mlzjMessage.setType(MessageTypeEnum.MESSAGE.getCode());
+            CtxUtils.getCtx().writeAndFlush(mlzjMessage);
 
             TimeUnit.SECONDS.sleep(5);
             User user = new User("13", 2,User.class);
@@ -65,7 +70,7 @@ public class NettyClient {
             userMlzjMessage.setData(user);
             userMlzjMessage.setQueue("qqq");
             userMlzjMessage.setTopic("topic");
-            CtxUtils.getCtx().writeAndFlush(userMlzjMessage).addListener(future -> System.out.println(future.isSuccess()));
+//            CtxUtils.getCtx().writeAndFlush(userMlzjMessage).addListener(future -> System.out.println(future.isSuccess()));
             TimeUnit.SECONDS.sleep(4);
             sync.channel().closeFuture().sync();
         } finally {

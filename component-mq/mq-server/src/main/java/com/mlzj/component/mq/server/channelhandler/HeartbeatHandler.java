@@ -1,4 +1,4 @@
-package com.mlzj.component.mq.server.demo;
+package com.mlzj.component.mq.server.channelhandler;
 
 import com.mlzj.component.mq.common.constants.MessageTypeEnum;
 import com.mlzj.component.mq.common.protocol.MlzjMessage;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class HeartbeatHandler extends SimpleChannelInboundHandler<MlzjMessage> {
 
-    Logger logger = LoggerFactory.getLogger(HeartbeatHandler.class);
+    private Logger logger = LoggerFactory.getLogger(HeartbeatHandler.class);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MlzjMessage msg) throws Exception {

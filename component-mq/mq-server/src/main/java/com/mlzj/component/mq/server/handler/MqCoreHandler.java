@@ -14,25 +14,26 @@ import org.springframework.stereotype.Component;
 public class MqCoreHandler {
 
 
+    /**
+     * 处理自定义事件 超时事件
+     * @param ctx 通道上下文
+     * @param evt 事件本身
+     */
     public void overTimeProcess(ChannelHandlerContext ctx, Object evt){
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             switch (event.state()) {
-                case READER_IDLE: {
+                case READER_IDLE:
                     log.info("读事件超时");
                     break;
-                }
-                case WRITER_IDLE: {
+                case WRITER_IDLE:
                     log.info("写事件超时");
                     break;
-                }
-                case ALL_IDLE: {
+                case ALL_IDLE:
                     log.info("读写时间总时间超时");
                     break;
-                }
-                default: {
+                default:
                     log.info("未知的过期事件");
-                }
             }
             ctx.channel().close();
         }

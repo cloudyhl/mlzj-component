@@ -30,6 +30,11 @@ public class MlzjMessage<T> {
     private String queue;
 
     /**
+     * 模式
+     */
+    private Integer mode;
+
+    /**
      * 数据域
      */
     private T data;

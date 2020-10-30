@@ -33,4 +33,9 @@ public class ServerProperties {
      */
     private Integer serverPort;
 
+    /**
+     * workerGroupSize
+     */
+    private Integer workers;
+
 }

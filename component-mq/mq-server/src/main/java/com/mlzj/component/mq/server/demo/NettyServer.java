@@ -2,7 +2,9 @@ package com.mlzj.component.mq.server.demo;
 
 import com.mlzj.component.mq.common.coder.ProtostuffMessageDecoder;
 import com.mlzj.component.mq.common.coder.ProtostuffMessageEncoder;
+import com.mlzj.component.mq.server.channelhandler.HeartbeatHandler;
 import com.mlzj.component.mq.server.channelhandler.LoginHandler;
+import com.mlzj.component.mq.server.factory.MessageProcessorFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -32,7 +34,7 @@ public class NettyServer {
                             ch.pipeline().addLast(new LengthFieldPrepender(2));
                             ch.pipeline().addLast(new ProtostuffMessageDecoder());
                             ch.pipeline().addLast(new ProtostuffMessageEncoder());
-                            ch.pipeline().addLast("loginHandler", new LoginHandler());
+                            ch.pipeline().addLast("loginHandler", new LoginHandler(new MessageProcessorFactory()));
                             ch.pipeline().addLast(new HeartbeatHandler());
                             ch.pipeline().addLast(new ServerHandler());
                         }

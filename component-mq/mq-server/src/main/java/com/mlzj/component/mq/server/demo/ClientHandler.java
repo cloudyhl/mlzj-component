@@ -1,13 +1,12 @@
 package com.mlzj.component.mq.server.demo;
 
-import com.mlzj.component.mq.common.User;
+import com.mlzj.component.mq.common.constants.MessageModeEnum;
+import com.mlzj.component.mq.common.constants.MessageTypeEnum;
 import com.mlzj.component.mq.common.protocol.MlzjMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author yhl
@@ -26,8 +25,11 @@ public class ClientHandler extends SimpleChannelInboundHandler {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        MlzjMessage mlzjMessage = new MlzjMessage();
-        mlzjMessage.setType(1);
+        MlzjMessage<String> mlzjMessage = new MlzjMessage<>();
+        mlzjMessage.setQueue("queue");
+        mlzjMessage.setMode(MessageModeEnum.QUEUE.getMode());
+        mlzjMessage.setData("hello world");
+        mlzjMessage.setType(MessageTypeEnum.MESSAGE.getCode());
         ctx.writeAndFlush(mlzjMessage);
     }
 

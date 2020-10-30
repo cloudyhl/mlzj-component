@@ -2,11 +2,13 @@ package com.mlzj.component.mq.server.server;
 
 import com.mlzj.component.mq.common.coder.ProtostuffMessageDecoder;
 import com.mlzj.component.mq.common.coder.ProtostuffMessageEncoder;
+import com.mlzj.component.mq.server.channelhandler.MqServerCoreHandler;
 import com.mlzj.component.mq.server.config.ServerProperties;
 import com.mlzj.component.mq.server.constants.CommonConstants;
-import com.mlzj.component.mq.server.demo.HeartbeatHandler;
-import com.mlzj.component.mq.server.demo.ServerHandler;
+import com.mlzj.component.mq.server.channelhandler.HeartbeatHandler;
 import com.mlzj.component.mq.server.channelhandler.LoginHandler;
+import com.mlzj.component.mq.server.factory.MessageProcessorFactory;
+import com.mlzj.component.mq.server.handler.MqCoreHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -26,7 +28,7 @@ import javax.annotation.Resource;
  */
 @Component
 @Slf4j
-public class NettyServer {
+public class MlzjMqServer {
 
     @Resource
     private ServerProperties serverProperties;
@@ -34,7 +36,7 @@ public class NettyServer {
     /**
      * 开启线程启动mq服务
      */
-    public NettyServer(){
+    public MlzjMqServer(){
         new Thread(()->{
             try {
                 this.init();
@@ -50,7 +52,7 @@ public class NettyServer {
      */
     private void init() throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workGroup = new NioEventLoopGroup();
+        EventLoopGroup workGroup = new NioEventLoopGroup(serverProperties.getWorkers());
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workGroup)
@@ -66,9 +68,9 @@ public class NettyServer {
                             ch.pipeline().addLast(new LengthFieldPrepender(2));
                             ch.pipeline().addLast(new ProtostuffMessageDecoder());
                             ch.pipeline().addLast(new ProtostuffMessageEncoder());
-                            ch.pipeline().addLast(CommonConstants.LOGIN_HANDLER_NAME, new LoginHandler());
+                            ch.pipeline().addLast(CommonConstants.LOGIN_HANDLER_NAME, new LoginHandler(new MessageProcessorFactory()));
                             ch.pipeline().addLast(new HeartbeatHandler());
-                            ch.pipeline().addLast(new ServerHandler());
+                            ch.pipeline().addLast(coreHandlerBuilder());
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 10)
@@ -79,6 +81,17 @@ public class NettyServer {
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
         }
+    }
+
+
+    /**
+     * 构建mq服务核心处理器
+     * @return 核心处理器
+     */
+    private MqServerCoreHandler coreHandlerBuilder(){
+        MqCoreHandler mqCoreHandler = new MqCoreHandler();
+        MessageProcessorFactory messageProcessorFactory = new MessageProcessorFactory();
+        return new MqServerCoreHandler(mqCoreHandler, messageProcessorFactory);
     }
 
 }

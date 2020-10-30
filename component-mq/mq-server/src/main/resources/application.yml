@@ -6,3 +6,4 @@ mlzj:
     writerIdleTimeSeconds: 10
     allIdleTimeSeconds: 20
     server-port: 22300
+    workers: 64
