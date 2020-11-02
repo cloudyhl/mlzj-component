@@ -13,5 +13,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class MlzjMqProperties {
 
+    /**
+     * url
+     */
     private String serverUrl;
+
+    /**
+     * 端口
+     */
+    private Integer port;
 }

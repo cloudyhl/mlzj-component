@@ -17,7 +17,7 @@ public class HeartBeatClientHandler extends SimpleChannelInboundHandler<MlzjMess
     protected void channelRead0(ChannelHandlerContext ctx, MlzjMessage msg) throws Exception {
         ActuatorUtils.isTrue(Objects.equals(msg.getType(), MessageTypeEnum.HEART.getCode()), () -> {
             MlzjMessage mlzjMessage = new MlzjMessage();
-            mlzjMessage.setType(3);
+            mlzjMessage.setType(MessageTypeEnum.HEART.getCode());
             ctx.writeAndFlush(mlzjMessage);
         });
         ActuatorUtils.isFalse(Objects.equals(msg.getType(), MessageTypeEnum.HEART.getCode()), ()-> ctx.fireChannelRead(msg));

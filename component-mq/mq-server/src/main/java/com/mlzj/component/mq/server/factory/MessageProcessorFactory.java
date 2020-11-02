@@ -4,6 +4,7 @@ import com.mlzj.component.mq.common.constants.MessageModeEnum;
 import com.mlzj.component.mq.server.processor.MessageProcessor;
 import com.mlzj.component.mq.server.processor.impl.QueueProcessorImpl;
 import com.mlzj.component.mq.server.processor.impl.TopicProcessorImpl;
+import com.sun.org.apache.bcel.internal.generic.SWITCH;
 
 /**
  * mq消息处理器生成工厂
@@ -23,9 +24,14 @@ public class MessageProcessorFactory {
     public MessageProcessor getMessageProcess(Integer messageMode) {
         if (MessageModeEnum.TOPIC.getMode().equals(messageMode)) {
             return TopicProcessorImpl.getInstance();
-        } else {
+        }
+        if (MessageModeEnum.QUEUE.getMode().equals(messageMode)) {
             return QueueProcessorImpl.getInstance();
         }
+        if (MessageModeEnum.SEND.getMode().equals(messageMode)) {
+            return null;
+        }
+        return null;
     }
 
 }

@@ -14,8 +14,9 @@ public enum MessageModeEnum {
     /**
      * 这是注释
      */
-    TOPIC(1, "主题"),
-    QUEUE(2, "队列");
+    TOPIC(1, "主题模式"),
+    QUEUE(2, "队列模式"),
+    SEND(3, "发送者模式");
 
     /**
      * 模式

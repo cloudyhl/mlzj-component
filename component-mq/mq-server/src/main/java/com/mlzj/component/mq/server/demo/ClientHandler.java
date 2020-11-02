@@ -25,12 +25,11 @@ public class ClientHandler extends SimpleChannelInboundHandler {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        MlzjMessage<String> mlzjMessage = new MlzjMessage<>();
-        mlzjMessage.setQueue("queue");
-        mlzjMessage.setMode(MessageModeEnum.QUEUE.getMode());
-        mlzjMessage.setData("hello world");
-        mlzjMessage.setType(MessageTypeEnum.MESSAGE.getCode());
+        MlzjMessage mlzjMessage = new MlzjMessage();
+        mlzjMessage.setType(MessageTypeEnum.LOGIN.getCode());
+        mlzjMessage.setMode(MessageModeEnum.SEND.getMode());
         ctx.writeAndFlush(mlzjMessage);
+
     }
 
     @Override
