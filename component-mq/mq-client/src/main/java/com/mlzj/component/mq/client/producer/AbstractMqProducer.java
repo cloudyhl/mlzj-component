@@ -80,8 +80,7 @@ public abstract class AbstractMqProducer<T> {
         mlzjMessage.setType(MessageTypeEnum.MESSAGE.getCode());
         mlzjMessage.setTopic(topic);
         mlzjMessage.setQueue(queue);
-        Integer mode = StringUtils.isNotBlank(topic) ? MessageModeEnum.TOPIC.getMode() : MessageModeEnum.QUEUE.getMode();
-        mlzjMessage.setMode(mode);
+        mlzjMessage.setMode(MessageModeEnum.SEND.getMode());
         return mlzjMessage;
     }
 
