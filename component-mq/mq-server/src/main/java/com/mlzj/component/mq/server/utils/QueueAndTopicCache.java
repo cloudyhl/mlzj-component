@@ -20,13 +20,13 @@ public class QueueAndTopicCache {
     /**
      * 用于保存主题类型的通道缓存
      */
-    private static Map<String, ChannelGroup> topicMap = new ConcurrentHashMap<>(32);
+    private static final Map<String, ChannelGroup> topicMap = new ConcurrentHashMap<>(32);
 
 
     /**
      * 用于保存直连队列的通道缓存
      */
-    private static Map<String, ChannelHandlerContext> queueMap = new ConcurrentHashMap<>(128);
+    private static final Map<String, ChannelHandlerContext> queueMap = new ConcurrentHashMap<>(128);
 
 
     /**

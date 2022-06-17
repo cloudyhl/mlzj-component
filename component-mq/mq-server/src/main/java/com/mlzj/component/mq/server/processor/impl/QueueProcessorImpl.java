@@ -11,7 +11,7 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class QueueProcessorImpl implements MessageProcessor {
 
-    private static QueueProcessorImpl queueProcessor = new QueueProcessorImpl();
+    private static final QueueProcessorImpl queueProcessor = new QueueProcessorImpl();
 
     public static QueueProcessorImpl getInstance(){
         return queueProcessor;

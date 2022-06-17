@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class HeartbeatHandler extends SimpleChannelInboundHandler<MlzjMessage> {
 
-    private Logger logger = LoggerFactory.getLogger(HeartbeatHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(HeartbeatHandler.class);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MlzjMessage msg) throws Exception {

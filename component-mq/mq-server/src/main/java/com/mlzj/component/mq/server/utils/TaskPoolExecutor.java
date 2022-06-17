@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TaskPoolExecutor {
 
-    private static ThreadPoolExecutor threadPoolExecutor;
+    private static final ThreadPoolExecutor threadPoolExecutor;
 
     static {
         threadPoolExecutor  = new ThreadPoolExecutor(128, 256, 10, TimeUnit.SECONDS, new LinkedBlockingDeque<>(), Executors.defaultThreadFactory());

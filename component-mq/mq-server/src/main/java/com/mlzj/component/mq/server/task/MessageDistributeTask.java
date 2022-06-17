@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
  * @date 2020/10/30
  */
 @AllArgsConstructor
-public class MessageDistributeTask implements Runnable{
+public class MessageDistributeTask implements Runnable {
 
     /**
      * 消息协议
@@ -22,7 +22,8 @@ public class MessageDistributeTask implements Runnable{
     private MessageProcessor messageProcess;
 
 
-    public MessageDistributeTask(){}
+    public MessageDistributeTask() {
+    }
 
 
     @Override
