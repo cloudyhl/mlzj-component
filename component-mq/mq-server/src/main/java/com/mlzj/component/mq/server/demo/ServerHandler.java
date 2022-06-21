@@ -31,7 +31,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        MlzjMessage<User> user = (MlzjMessage<User>)msg;
+        MlzjMessage user = (MlzjMessage)msg;
         System.out.println(user);
         DefaultChannelPromise defaultChannelPromise = new DefaultChannelPromise(ctx.channel(),eventExecutor);
         defaultChannelPromise.addListener(new AfterListener(user));

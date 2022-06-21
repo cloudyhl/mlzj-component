@@ -43,12 +43,11 @@ public class NettyClient {
                     })
                     .option(ChannelOption.SO_BACKLOG, 10)
                     .option(ChannelOption.SO_REUSEADDR,true);
-            ChannelFuture sync = bootstrap.connect(new InetSocketAddress("127.0.0.1", 22300)).sync().addListener((GenericFutureListener<ChannelFuture>) future -> {
+            ChannelFuture sync = bootstrap.connect(new InetSocketAddress("127.0.0.1", 22230)).sync().addListener((GenericFutureListener<ChannelFuture>) future -> {
                 if (future.isSuccess()) {
                     User user = new User("12", 2,User.class);
-                    MlzjMessage<User> userMlzjMessage =new MlzjMessage<>();
+                    MlzjMessage userMlzjMessage =new MlzjMessage();
                     userMlzjMessage.setMessageId("12321");
-                    userMlzjMessage.setData(user);
                     userMlzjMessage.setQueue("queue");
                     userMlzjMessage.setType(MessageTypeEnum.MESSAGE.getCode());
 //                    for (int index = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ; index < 10; index++) {
@@ -56,7 +55,7 @@ public class NettyClient {
 //                    }
                 }
             });
-            MlzjMessage<String> mlzjMessage = new MlzjMessage<>();
+            MlzjMessage mlzjMessage = new MlzjMessage();
             mlzjMessage.setQueue("queue");
             mlzjMessage.setMode(MessageModeEnum.QUEUE.getMode());
             mlzjMessage.setData("hello world");
@@ -65,9 +64,8 @@ public class NettyClient {
 
             TimeUnit.SECONDS.sleep(5);
             User user = new User("13", 2,User.class);
-            MlzjMessage<User> userMlzjMessage =new MlzjMessage<>();
+            MlzjMessage userMlzjMessage =new MlzjMessage();
             userMlzjMessage.setMessageId("12www321");
-            userMlzjMessage.setData(user);
             userMlzjMessage.setQueue("qqq");
             userMlzjMessage.setTopic("topic");
 //            CtxUtils.getCtx().writeAndFlush(userMlzjMessage).addListener(future -> System.out.println(future.isSuccess()));

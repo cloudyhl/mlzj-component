@@ -18,7 +18,8 @@ public enum MessageTypeEnum {
      */
     LOGIN(1, "通道注册"),
     MESSAGE(2, "普通消息"),
-    HEART(3, "心跳");
+    HEART(3, "心跳"),
+    HEART_LOGIN(4, "心跳注册");
 
     /**
      * 编码

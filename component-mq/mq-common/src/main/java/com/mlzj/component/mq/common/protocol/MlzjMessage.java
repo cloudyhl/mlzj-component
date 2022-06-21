@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2020/5/20
  */
 @Data
-public class MlzjMessage<T> {
+public class MlzjMessage {
 
     /**
      * 消息id
@@ -37,5 +37,5 @@ public class MlzjMessage<T> {
     /**
      * 数据域
      */
-    private T data;
+    private String data;
 }

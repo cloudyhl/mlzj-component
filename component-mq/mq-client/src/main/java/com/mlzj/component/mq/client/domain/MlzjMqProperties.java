@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @ConfigurationProperties(prefix = "mlzj.mq")
-@Component
 public class MlzjMqProperties {
 
     /**

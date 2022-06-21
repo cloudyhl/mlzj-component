@@ -27,7 +27,7 @@ public class HeartbeatHandler extends SimpleChannelInboundHandler<MlzjMessage> {
         } else if (Objects.equals(msg.getType(), MessageTypeEnum.MESSAGE.getCode())){
             ctx.fireChannelRead(msg);
         }
-        if (Objects.equals(msg.getType(), MessageTypeEnum.LOGIN.getCode())){
+        if (Objects.equals(msg.getType(), MessageTypeEnum.HEART_LOGIN.getCode())){
             ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx),0,3, TimeUnit.SECONDS);
         }
 

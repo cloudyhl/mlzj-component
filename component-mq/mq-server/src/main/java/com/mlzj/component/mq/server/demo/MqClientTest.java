@@ -10,11 +10,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @author yhl
  * @date 2020/10/30
  */
-public class MqClientTest extends SimpleChannelInboundHandler<MlzjMessage<String>> {
+public class MqClientTest extends SimpleChannelInboundHandler<MlzjMessage> {
 
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, MlzjMessage<String> msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, MlzjMessage msg) throws Exception {
         System.out.println(msg.getData());
     }
 

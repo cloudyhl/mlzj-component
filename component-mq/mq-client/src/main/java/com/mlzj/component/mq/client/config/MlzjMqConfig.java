@@ -1,5 +1,7 @@
 package com.mlzj.component.mq.client.config;
 
+import com.mlzj.component.mq.client.domain.MlzjMqProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,5 +11,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan("com.mlzj.component.mq.client")
+@EnableConfigurationProperties({MlzjMqProperties.class})
 public class MlzjMqConfig {
 }

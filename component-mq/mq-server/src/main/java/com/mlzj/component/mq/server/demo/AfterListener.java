@@ -16,9 +16,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class AfterListener implements GenericFutureListener<ChannelFuture> {
 
-    private MlzjMessage<User> user;
+    private MlzjMessage user;
 
-    public AfterListener(MlzjMessage<User> user){
+    public AfterListener(MlzjMessage user){
         this.user = user;
     }
 

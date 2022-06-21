@@ -1,1 +1,2 @@
 #org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.mlzj.component.mq.client.config.MlzjMqConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.mlzj.component.mq.client.config.MlzjMqConfig

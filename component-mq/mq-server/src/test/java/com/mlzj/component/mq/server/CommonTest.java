@@ -39,10 +39,10 @@ public class CommonTest {
     }
     @Test
     public void testLength(){
-        MlzjMessage<User> mlzjMessage= new MlzjMessage<>();
+        MlzjMessage mlzjMessage= new MlzjMessage();
         mlzjMessage.setTopic("123");
         System.out.println(ProtostuffUtils.serialize(mlzjMessage).length);
-        MlzjMessage<User> mlzjMessag1 = new MlzjMessage<>();
+        MlzjMessage mlzjMessag1 = new MlzjMessage();
         mlzjMessag1.setTopic("1234");
         mlzjMessag1.setQueue("2312231");
         System.out.println(ProtostuffUtils.serialize(mlzjMessag1).length);
