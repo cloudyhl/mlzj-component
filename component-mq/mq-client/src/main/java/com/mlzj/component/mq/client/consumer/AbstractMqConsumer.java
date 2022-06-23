@@ -27,19 +27,30 @@ import java.net.InetSocketAddress;
  */
 public abstract class AbstractMqConsumer {
 
-    abstract public MlzjMqProperties getMlzjMqProperties();
+    private MlzjMqProperties mlzjMqProperties;
 
-    abstract public MessageModeEnum getMessageMode();
+    private String topicOrQueueName;
 
-    abstract public String topicOrQueueName();
+    private MessageModeEnum mode;
 
     abstract public void onMessage(MlzjMessage message);
+
+    public void setMode(MessageModeEnum mode) {
+        this.mode = mode;
+    }
+
+    public void setTopicOrQueueName(String topicOrQueueName) {
+        this.topicOrQueueName = topicOrQueueName;
+    }
+
+    public void setMlzjMqProperties(MlzjMqProperties mlzjMqProperties) {
+        this.mlzjMqProperties = mlzjMqProperties;
+    }
 
     public void initMqChannel() {
         new Thread(()->{
             EventLoopGroup workGroup = new NioEventLoopGroup();
             Bootstrap bootstrap = new Bootstrap();
-            MlzjMqProperties mlzjMqProperties = this.getMlzjMqProperties();
             try {
                 bootstrap.group(workGroup)
                         .channel(NioSocketChannel.class)
@@ -60,11 +71,11 @@ public abstract class AbstractMqConsumer {
                 Channel channel = sync.channel();
                 MlzjMessage mlzjMessage = new MlzjMessage();
                 mlzjMessage.setType(MessageTypeEnum.LOGIN.getCode());
-                mlzjMessage.setMode(this.getMessageMode().getMode());
-                if (MessageModeEnum.TOPIC.getMode().equals(this.getMessageMode().getMode())) {
-                    mlzjMessage.setTopic(this.topicOrQueueName());
+                mlzjMessage.setMode(mode.getMode());
+                if (MessageModeEnum.TOPIC.getMode().equals(mode.getMode())) {
+                    mlzjMessage.setTopic(topicOrQueueName);
                 } else {
-                    mlzjMessage.setQueue(this.topicOrQueueName());
+                    mlzjMessage.setQueue(topicOrQueueName);
                 }
                 channel.writeAndFlush(mlzjMessage);
                 MlzjMessage heartBeatLogin = new MlzjMessage();
