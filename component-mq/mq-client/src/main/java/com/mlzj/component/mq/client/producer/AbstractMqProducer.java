@@ -60,6 +60,7 @@ public abstract class AbstractMqProducer {
     public void pushQueueMessage(String queue, String data){
         MlzjMessage message = this.getTemplateMessage();
         message.setMode(MessageModeEnum.QUEUE.getMode());
+        message.setApplicationName(getMlzjMqProperties().getApplicationName());
         message.setQueue(queue);
         message.setData(data);
         this.channel.writeAndFlush(message);
@@ -72,12 +73,13 @@ public abstract class AbstractMqProducer {
     public void pushTopicMessage(String topic, String data){
         MlzjMessage message = this.getTemplateMessage();
         message.setMode(MessageModeEnum.TOPIC.getMode());
+        message.setApplicationName(getMlzjMqProperties().getApplicationName());
         message.setTopic(topic);
         message.setData(data);
         this.channel.writeAndFlush(message);
     }
 
-    public void initMqChannel() throws InterruptedException {
+    public void initMqChannel(){
         new Thread(()->{
             EventLoopGroup workGroup = new NioEventLoopGroup();
             Bootstrap bootstrap = new Bootstrap();
@@ -107,6 +109,8 @@ public abstract class AbstractMqProducer {
                 e.printStackTrace();
             } finally {
                 workGroup.shutdownGracefully();
+                initMqChannel();
+
             }
         }).start();
 

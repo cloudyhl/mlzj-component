@@ -1,8 +1,14 @@
 package com.mlzj.component.mq.server.handler;
 
+import com.mlzj.component.mq.server.utils.QueueAndTopicCache;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateEvent;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,6 +40,32 @@ public class MqCoreHandler {
                     break;
                 default:
                     log.info("未知的过期事件");
+            }
+            boolean isDel = false;
+            Map<String, List<ChannelHandlerContext>> queueMap = QueueAndTopicCache.getQueueMap();
+            for (Entry<String, List<ChannelHandlerContext>> queueEntry : queueMap.entrySet()) {
+                List<ChannelHandlerContext> value = queueEntry.getValue();
+                Iterator<ChannelHandlerContext> iterator = value.iterator();
+                while (iterator.hasNext()) {
+                    if (StringUtils.equals(ctx.channel().id().asLongText(), iterator.next().channel().id().asLongText())) {
+                        iterator.remove();
+                        isDel = true;
+                        break;
+                    }
+                }
+            }
+            if (!isDel) {
+                Map<String, List<ChannelHandlerContext>> topicMap = QueueAndTopicCache.getTopicMap();
+                for (Entry<String, List<ChannelHandlerContext>> topicEntry : topicMap.entrySet()) {
+                    List<ChannelHandlerContext> value = topicEntry.getValue();
+                    Iterator<ChannelHandlerContext> iterator = value.iterator();
+                    while (iterator.hasNext()) {
+                        if (StringUtils.equals(ctx.channel().id().asLongText(), iterator.next().channel().id().asLongText())) {
+                            iterator.remove();
+                            break;
+                        }
+                    }
+                }
             }
             ctx.channel().close();
         }

@@ -15,6 +15,11 @@ public class MlzjMessage {
     private String messageId;
 
     /**
+     * 应用名称
+     */
+    private String applicationName;
+
+    /**
      * 消息类型
      */
     private Integer type;

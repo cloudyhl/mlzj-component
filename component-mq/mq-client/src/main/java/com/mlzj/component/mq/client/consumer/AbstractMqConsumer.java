@@ -86,6 +86,7 @@ public abstract class AbstractMqConsumer {
                 e.printStackTrace();
             } finally {
                 workGroup.shutdownGracefully();
+                initMqChannel();
             }
         }).start();
 

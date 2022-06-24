@@ -21,4 +21,10 @@ public class MlzjMqProperties {
      * 端口
      */
     private Integer port;
+
+
+    /**
+     * 应用名称
+     */
+    private String applicationName;
 }
