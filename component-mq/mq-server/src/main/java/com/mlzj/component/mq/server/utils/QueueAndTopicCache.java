@@ -1,5 +1,6 @@
 package com.mlzj.component.mq.server.utils;
 
+import com.mlzj.component.mq.server.domain.ChannelMark;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
 import java.util.List;
@@ -18,10 +19,6 @@ public class QueueAndTopicCache {
     private QueueAndTopicCache(){}
 
 
-    /**
-     * 用于保存主题类型的通道缓存
-     */
-    private static final Map<String, List<ChannelHandlerContext>> topicMap = new ConcurrentHashMap<>(32);
 
 
     /**
@@ -30,25 +27,25 @@ public class QueueAndTopicCache {
     private static final Map<String, ChannelGroup> topicRadioMap = new ConcurrentHashMap<>(32);
 
 
-    /**
-     * 用于保存直连队列的通道缓存
-     */
-    private static final Map<String, List<ChannelHandlerContext>> queueMap = new ConcurrentHashMap<>(128);
+
+    private static final Map<String, Map<String, List<ChannelHandlerContext>>> applicationQueueMap = new ConcurrentHashMap<>(16);
+
+    private static final Map<String, Map<String, List<ChannelHandlerContext>>> applicationTopicMap = new ConcurrentHashMap<>(16);
+
+    private static final Map<String, ChannelMark> channelMarkMap = new ConcurrentHashMap<>(1024);
 
 
-    /**
-     * 获取主题类型缓存
-     * @return 主题类型的缓存
-     */
-    public static Map<String, List<ChannelHandlerContext>> getTopicMap(){
-        return topicMap;
+
+    public static Map<String, Map<String, List<ChannelHandlerContext>>> getApplicationQueueMap(){
+        return applicationQueueMap;
     }
 
-    /**
-     * 获取直连队列类型的缓存
-     * @return 直连队列类型的缓存
-     */
-    public static Map<String, List<ChannelHandlerContext>> getQueueMap(){
-        return queueMap;
+
+    public static Map<String, Map<String, List<ChannelHandlerContext>>> getApplicationTopicMap(){
+        return applicationTopicMap;
+    }
+
+    public static Map<String, ChannelMark> getChannelMarkMap(){
+        return channelMarkMap;
     }
 }

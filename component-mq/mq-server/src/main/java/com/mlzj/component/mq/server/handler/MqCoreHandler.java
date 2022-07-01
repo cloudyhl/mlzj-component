@@ -1,5 +1,7 @@
 package com.mlzj.component.mq.server.handler;
 
+import com.mlzj.component.mq.common.constants.MessageModeEnum;
+import com.mlzj.component.mq.server.domain.ChannelMark;
 import com.mlzj.component.mq.server.utils.QueueAndTopicCache;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -41,23 +43,24 @@ public class MqCoreHandler {
                 default:
                     log.info("未知的过期事件");
             }
-            boolean isDel = false;
-            Map<String, List<ChannelHandlerContext>> queueMap = QueueAndTopicCache.getQueueMap();
-            for (Entry<String, List<ChannelHandlerContext>> queueEntry : queueMap.entrySet()) {
-                List<ChannelHandlerContext> value = queueEntry.getValue();
-                Iterator<ChannelHandlerContext> iterator = value.iterator();
-                while (iterator.hasNext()) {
-                    if (StringUtils.equals(ctx.channel().id().asLongText(), iterator.next().channel().id().asLongText())) {
-                        iterator.remove();
-                        isDel = true;
-                        break;
+            ChannelMark channelMark = QueueAndTopicCache.getChannelMarkMap().get(ctx.channel().id().asLongText());
+            if (MessageModeEnum.TOPIC.getMode().equals(channelMark.getMode())) {
+                Map<String, List<ChannelHandlerContext>> topicMap = QueueAndTopicCache.getApplicationTopicMap().get(channelMark.getApplicationName());
+                for (Entry<String, List<ChannelHandlerContext>> topicEntry : topicMap.entrySet()) {
+                    List<ChannelHandlerContext> value = topicEntry.getValue();
+                    Iterator<ChannelHandlerContext> iterator = value.iterator();
+                    while (iterator.hasNext()) {
+                        if (StringUtils.equals(ctx.channel().id().asLongText(), iterator.next().channel().id().asLongText())) {
+                            iterator.remove();
+                            break;
+                        }
                     }
                 }
             }
-            if (!isDel) {
-                Map<String, List<ChannelHandlerContext>> topicMap = QueueAndTopicCache.getTopicMap();
-                for (Entry<String, List<ChannelHandlerContext>> topicEntry : topicMap.entrySet()) {
-                    List<ChannelHandlerContext> value = topicEntry.getValue();
+            if (MessageModeEnum.QUEUE.getMode().equals(channelMark.getMode())) {
+                Map<String, List<ChannelHandlerContext>> queueMap = QueueAndTopicCache.getApplicationQueueMap().get(channelMark.getApplicationName());
+                for (Entry<String, List<ChannelHandlerContext>> queueEntry : queueMap.entrySet()) {
+                    List<ChannelHandlerContext> value = queueEntry.getValue();
                     Iterator<ChannelHandlerContext> iterator = value.iterator();
                     while (iterator.hasNext()) {
                         if (StringUtils.equals(ctx.channel().id().asLongText(), iterator.next().channel().id().asLongText())) {

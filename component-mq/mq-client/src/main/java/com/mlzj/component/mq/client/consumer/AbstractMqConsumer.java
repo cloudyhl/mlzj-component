@@ -72,6 +72,7 @@ public abstract class AbstractMqConsumer {
                 MlzjMessage mlzjMessage = new MlzjMessage();
                 mlzjMessage.setType(MessageTypeEnum.LOGIN.getCode());
                 mlzjMessage.setMode(mode.getMode());
+                mlzjMessage.setApplicationName(mlzjMqProperties.getApplicationName());
                 if (MessageModeEnum.TOPIC.getMode().equals(mode.getMode())) {
                     mlzjMessage.setTopic(topicOrQueueName);
                 } else {
