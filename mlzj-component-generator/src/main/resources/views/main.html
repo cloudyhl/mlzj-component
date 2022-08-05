@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>欢迎页</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">作用流程</div>
+    <div style="padding: 10px 0 20px 10px;">
+        <h3>&nbsp;&nbsp;&nbsp;获取帮助</h3>
+        <ul>
+            <li>第一步：修改<b>application.yml</b>里面的参数：<br/>
+                <b>spring.datasource.url</b>（数据库换成项目使用的数据库）<br/>
+                <b>spring.datasource.username</b>（相应的数据库登录名）<br/>
+                <b>spring.datasource.password</b>（相应的数据库登录密码）
+            </li>
+            <li>第二步：修改<b>generator.properties</b>里面的参数：<br/>
+                <b>mainPath=com.shsc.framework</b>（项目中的项层包名）<br/>
+                <b>package=com.shsc.framework.modules</b>（controller,service,dao,mapper生成的目录）<br/>
+                <b>moduleName=actitiviModule</b>（功能模块名）<br/>
+                <b>author=sunqing</b>（生成代码注释里面的作者）<br/>
+                <b>email=sunqing@163.com</b>（生成代码注释里面的邮箱地址，可不配）<br/>
+                <b>tablePrefix=tb_</b>（数据库表前缀，生成的类名不会包含表前缀）
+            </li>
+            <li>
+                第三步：启动项目。登录地址：http://localhost:8888
+            </li>
+            <li>
+                第四步：选中表名，点击生成代码。将生成好的代码直接拷贝到项目工程中可直接使用。
+            </li>
+
+        </ul>
+
+        <h3>&nbsp;&nbsp;&nbsp;使用愉快-sunqing</h3>
+    </div>
+</div>
+</body>
+</html>

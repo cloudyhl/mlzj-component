@@ -1,0 +1,70 @@
+package ${package}.service;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${package}.entity.po.${className}Po;
+import com.shsc.plugin.mybatisplus.service.IBaseService;
+import com.shsc.tms.biz.dto.${moduleName}.request.${className}AddReqDto;
+import com.shsc.tms.biz.dto.${moduleName}.request.${className}ModReqDto;
+import com.shsc.tms.biz.dto.${moduleName}.request.${className}PageReqDto;
+import com.shsc.tms.biz.dto.${moduleName}.response.*;
+
+/**
+ * @author : ${author}
+ * @Date : ${datetime}
+ **/
+public interface I${className}Service extends IBaseService<${className}Po> {
+    /**
+     * @description : 新增${comments}
+     * @author : yhl
+     * @date : ${datetime}
+     * @param reqDto
+     * @return : com.shsc.tms.biz.dto.${classname}.response.${className}AddRspDto
+     **/
+    ${className}AddRspDto add${className}(${className}AddReqDto reqDto) throws Exception;
+
+    /**
+     * @description : 修改${comments}
+     * @author : yhl
+     * @date : ${datetime}
+     * @param reqDto
+     * @return : com.shsc.tms.biz.dto.${classname}.response.${className}ModRspDto
+     **/
+    ${className}ModRspDto mod${className}(${className}ModReqDto reqDto) throws Exception;
+
+    /**
+     * @description : 删除${comments}，逻辑删除（软删除）
+     * @author : yhl
+     * @date : ${datetime}
+     * @param reqDto
+     * @return : com.shsc.tms.biz.dto.${classname}.response.${className}DelRspDto
+     **/
+    ${className}DelRspDto del${className}(${className}DelReqDto reqDto) throws Exception;
+
+    /**
+     * @description : 根据主键ID查询${comments}信息
+     * @author : yhl
+     * @date : ${datetime}
+     * @param id
+     * @return : com.shsc.tms.biz.dto.${classname}.response.${className}DetailRspDto
+     **/
+    ${className}DetailRspDto query${className}ById(Long id);
+
+    /**
+     * @description : 根据${comments}ID查询${comments}信息
+     * @author : yhl
+     * @date : ${datetime}
+     * @param ${classname}Id
+     * @return : com.shsc.tms.biz.dto.${classname}.response.${className}DetailRspDto
+     **/
+    ${className}DetailRspDto query${className}By${className}Id(String ${classname}Id);
+
+    /**
+     * @description : 分页查询${comments}列表信息
+     * @author : yhl
+     * @date : ${datetime}
+     * @param reqDto
+     * @return : com.baomidou.mybatisplus.extension.plugins.pagination.Page<com.shsc.tms.biz.dto.${classname}.response.${className}PageRspDto>
+     **/
+    Page<${className}PageRspDto> query${className}ListByPage(${className}PageReqDto reqDto);
+}
+
