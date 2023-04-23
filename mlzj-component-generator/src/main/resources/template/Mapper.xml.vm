@@ -23,8 +23,8 @@
         ${tableName}
         where del_flag = 0
 #foreach($column in $columns)
-        <if test="#if($column.attrType == "String") item.$column.attrname != null and item.$column.attrname != ''#else item.$column.attrname != null #end">
-            AND ${column.columnName} = #{item.$column.attrname}
+        <if test="#if($column.attrType == "String") dto.$column.attrname != null and dto.$column.attrname != ''#else dto.$column.attrname != null #end">
+            AND ${column.columnName} = #{dto.$column.attrname}
         </if>
 #end
     </select>
