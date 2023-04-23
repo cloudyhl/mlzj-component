@@ -1,28 +1,21 @@
 package ${package}.dto.${moduleName}.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.shsc.tms.common.model.request.CommonBaseRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 /**
- * @author : ${author}
- * @date : ${datetime}
- **/
+ * @author ${author}
+ * @date ${datetime}
+ */
 @Data
 @ApiModel("${comments}删除请求数据传输对象")
-public class ${className}DelReqDto extends CommonBaseRequest {
+public class ${className}DelReqDto {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * ${comments}ID
+	 * id
 	 */
-	@ApiModelProperty(value = "${comments}ID", name = "${classname}Id")
-	private String ${classname}Id;
+	@ApiModelProperty(value = "id", name = "id")
+	private Integer id;
 }

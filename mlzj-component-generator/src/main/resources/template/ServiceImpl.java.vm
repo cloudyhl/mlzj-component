@@ -1,133 +1,79 @@
 package ${package}.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.shsc.plugin.mybatisplus.service.impl.BaseServiceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import com.shsc.tms.common.enums.${bizPrefix}BizErrorEnum;
 import ${package}.mapper.${className}PoMapper;
 import ${package}.entity.po.${className}Po;
 import ${package}.service.I${className}Service;
 import lombok.extern.slf4j.Slf4j;
-import com.shsc.tms.biz.dto.${moduleName}.request.${className}AddReqDto;
-import com.shsc.tms.biz.dto.${moduleName}.request.${className}ModReqDto;
-import com.shsc.tms.biz.dto.${moduleName}.request.${className}PageReqDto;
-import com.shsc.tms.biz.dto.${moduleName}.response.*;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+import ${package}.dto.${moduleName}.request.*;
 
+import ${package}.vo.${moduleName}.*;
+import ${package}.utils.ObjectTools;
+import java.util.List;
+import javax.annotation.Resource;
+
+/**
+* @author ${author}
+* @date ${datetime}
+*/
 @Slf4j
 @Service
-public class ${className}ServiceImpl extends BaseServiceImpl<${className}PoMapper, ${className}Po> implements I${className}Service {
-    @Autowired
+public class ${className}ServiceImpl extends ServiceImpl<${className}PoMapper, ${className}Po> implements I${className}Service {
+    @Resource
     private ${className}PoMapper ${classname}PoMapper;
 
     @Override
-    public ${className}AddRspDto add${className}(${className}AddReqDto reqDto) throws Exception {
-        ${className}Po ${classname}Po = Dto2PoConvert.${classname}Add(reqDto);
-        boolean result = save(${classname}Po);
-        if (!result) {
-            //log.error("========新增${comments}异常，${classname}Name={}，creator={}", reqDto.get${className}Name(), reqDto.getEmployeeNo());
-            //throw ${bizPrefix}BizExceptionUtil.genException(${bizPrefix}BizErrorEnum.${tableObj}_ADD_FAIL);
-        }
-        ${className}AddRspDto rspDto = Po2DtoConvert.po2${className}AddRsp(${classname}Po);
-
-        //记录操作日志
-        //saveOpLog(${classname}Po, OperateTypeEnum.ADD_${tableObj}.getMessage(), OperateBusiTypeEnum.${tableObj}_ID.getCode(), null);
-        return rspDto;
+    public void add${className}(${className}AddReqDto reqDto) {
+        ${className}Po ${classname}Po = new ${className}Po();
+        BeanUtils.copyProperties(reqDto, ${classname}Po);
+        super.save(${classname}Po);
     }
 
     @Override
-    public ${className}ModRspDto mod${className}(${className}ModReqDto reqDto) throws Exception {
-        //参数校验
-        this.check${className}(reqDto.get${className}Id());
-
-        ${className}Po ${classname}Po = Dto2PoConvert.${classname}Mod(reqDto);
-
-        QueryWrapper<${className}Po> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(PoColumnNameDef.${objPrefix}${className}.${tableObj}_ID, reqDto.get${className}Id());
-        int result = ${classname}PoMapper.update(${classname}Po, queryWrapper);
-        if (result <= 0) {
-            //log.error("========修改${comments}异常，${classname}Id={}，${classname}Name={}，modifier={}", reqDto.get${className}Id(), reqDto.get${className}Name(), reqDto.getEmployeeNo());
-            //throw ${bizPrefix}BizExceptionUtil.genException(${bizPrefix}BizErrorEnum.${tableObj}_MOD_FAIL);
-        }
-        ${className}ModRspDto rspDto = Po2DtoConvert.po2${className}ModRsp(${classname}Po);
-        //记录操作日志
-        //saveOpLog(${classname}Po, OperateTypeEnum.MOD_${tableObj}.getMessage(), OperateBusiTypeEnum.${tableObj}_ID.getCode(), null);
-        return rspDto;
+    public void mod${className}(${className}ModReqDto reqDto) {
+        ${className}Po ${classname}Po = new ${className}Po();
+        BeanUtils.copyProperties(reqDto, ${classname}Po);
+        LambdaQueryWrapper<${className}Po> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(${className}Po::getId, reqDto.getId());
+        ${classname}PoMapper.update(${classname}Po, queryWrapper);
     }
 
     @Override
-    public ${className}DelRspDto del${className}(${className}DelReqDto reqDto) throws Exception {
-        //参数校验
-        this.check${className}(reqDto.get${className}Id());
+    public void del${className}(${className}DelReqDto reqDto) {
+        ${className}Po ${classname}Po = new ${className}Po();
+        BeanUtils.copyProperties(reqDto, ${classname}Po);
+        LambdaQueryWrapper<${className}Po> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(${className}Po::getId, reqDto.getId());
+        ${classname}Po.setDelFlag(true);
+        ${classname}PoMapper.update(${classname}Po, queryWrapper);
 
-        ${className}Po ${classname}Po = Dto2PoConvert.${classname}Del(reqDto);
-
-        QueryWrapper<${className}Po> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(PoColumnNameDef.${objPrefix}${className}.${tableObj}_ID, reqDto.get${className}Id());
-        int result = ${classname}PoMapper.update(${classname}Po, queryWrapper);
-        if (result <= 0) {
-            //log.error("========删除${comments}异常，${classname}Id={}，modifier={}", ${classname}Id, reqDto.getEmployeeNo());
-            //throw ${bizPrefix}BizExceptionUtil.genException(${bizPrefix}BizErrorEnum.${tableObj}_DEL_FAIL);
-        }
-        ${className}DelRspDto rspDto = Po2DtoConvert.po2${className}DelRsp(${classname}Po);
-        //记录操作日志
-        //saveOpLog(${classname}Po, OperateTypeEnum.DEL_${tableObj}.getMessage(), OperateBusiTypeEnum.${tableObj}_ID.getCode(), null);
-        return rspDto;
     }
 
     @Override
-    public ${className}DetailRspDto query${className}ById(Long id) {
+    public ${className}RspVo query${className}ById(Integer id) {
         ${className}Po ${classname}Po = getById(id);
-        return Po2DtoConvert.po2${className}DetailRsp(${classname}Po);
+        ${className}RspVo ${classname}RspVo = new ${className}RspVo();
+        BeanUtils.copyProperties(${classname}Po, ${classname}RspVo);
+        return ${classname}RspVo;
     }
 
-    @Override
-    public ${className}DetailRspDto query${className}By${className}Id(String ${classname}Id) {
-        QueryWrapper<${className}Po> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(PoColumnNameDef.${objPrefix}${className}.${tableObj}_ID, ${classname}Id);
-        ${className}Po ${classname}Po = ${classname}PoMapper.selectOne(queryWrapper);
-        return Po2DtoConvert.po2${className}DetailRsp(${classname}Po);
-    }
 
     @Override
-    public Page<${className}PageRspDto> query${className}ListByPage(${className}PageReqDto reqDto) {
-        Page<${className}PageRspDto> page = new Page(reqDto.getPageNum(), reqDto.getPageSize());
-        //设置排序字段
-        CommonUtil.setOrderFields(page, reqDto.getAscFields(), reqDto.getDescFields());
-        //分页查询
-        List<${className}Po> list = ${classname}PoMapper.query${className}ListByPage(page, reqDto);
-        //结果转换
-        List<${className}PageRspDto> rspDtoList = Po2DtoConvert.po2${className}PageRsp(list);
-        //设置结果
-        page.setRecords(rspDtoList);
+    public Page<${className}PageRspVo> query${className}ListByPage(${className}PageReqDto reqDto) {
+        Page<${className}PageRspVo> page = new Page<>(reqDto.getPage(), reqDto.getSize());
+        ${classname}PoMapper.query${className}ListByPage(page, reqDto);
         return page;
     }
 
-    /**
-     * 校验${comments}信息
-     */
-    private void check${className}(String ${classname}Id) throws Exception {
-        ${className}DetailRspDto ${classname}DetailRspDto = this.query${className}By${className}Id(${classname}Id);
-        //校验${comments}是否存在
-        if (ObjectUtils.isEmpty(${classname}DetailRspDto)) {
-            throw ${bizPrefix}BizExceptionUtil.genException(${bizPrefix}BizErrorEnum.${tableObj}_NOT_EXIST);
-        }
-    }
 
-    /**
-     * 保存操作日志
-     */
-    private void saveOpLog(${className}Po ${classname}Po, String operateType, String type, String operateRemark) {
-        try {
-            OperationLogBo operationLog = new OperationLogBo();
-            operationLog.setOperateType(operateType).setOperator(${classname}Po.getCreator());
-            operationLog.setType(type).setOrderNo(${classname}Po.get${className}Id());
-            operationLog.setOperateRemark(StringUtils.isEmpty(operateRemark) ? operateType : operateRemark);
-            LogUtil.saveOperationLog(operationLog);
-        } catch (Exception e) {
-            log.error("========{}，保存操作日志失败，operator={}，${classname}Id={}", operateType, ${classname}Po.getCreator(), ${classname}Po.get${className}Id());
-            //TODO 如果保存日志失败，考虑将日子操作记录存放缓存或数据库
-        }
+    @Override
+    public void batchUpdate(List<${className}ModReqDto> reqDtos) throws Exception{
+        List<${className}Po> pos = ObjectTools.getCopyObjList(reqDtos, ${className}Po.class);
+        ${classname}PoMapper.batchUpdate(pos);
     }
 }

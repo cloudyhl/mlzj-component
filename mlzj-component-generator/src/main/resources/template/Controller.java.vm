@@ -1,155 +1,80 @@
 package ${package}.controller;
 
-import com.shsc.framework.common.model.ResponseEntity;
-import com.shsc.framework.common.model.ResponseHelper;
-import com.shsc.tms.annotation.ShscLog;
-import com.shsc.tms.biz.dto.${moduleName}.request.${className}AddReqDto;
-import com.shsc.tms.biz.dto.${moduleName}.request.${className}ModReqDto;
-import com.shsc.tms.biz.dto.${moduleName}.request.${className}PageReqDto;
-import com.shsc.tms.biz.dto.${moduleName}.response.*;
-import com.shsc.tms.common.enums.${bizPrefix}BizErrorEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import javax.annotation.Resource;
+import ${package}.dto.${moduleName}.request.*;
+
+import ${package}.vo.${moduleName}.*;
+import ${package}.domain.JsonRsp;
+import ${package}.domain.JsonRspHelper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import javax.validation.Valid;
+
 import ${package}.service.I${className}Service;
-import com.shsc.tms.constant.HttpConstant;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 /**
- * @author : ${author}
- * @date : ${datetime}
- **/
+ * @author ${author}
+ * @date ${datetime}
+ */
 @Slf4j
 @RestController
 @RequestMapping("/${pathName}")
 @Api(value = "/${pathName}", tags = "${comments}服务接口")
 public class ${className}Controller {
-    @Autowired
+    @Resource
     private I${className}Service ${classname}Service;
 
-    /**
-     * @description : 新增${comments}
-     * @author : ${author}
-     * @date : ${datetime}
-     * @param reqDto
-     * @return : com.shsc.framework.common.model.ResponseEntity
-     **/
-    @ApiOperation(value = "新增${comments}", httpMethod = HttpConstant.POST, response = ${className}AddRspDto.class, notes = "新增${comments}")
-    @PostMapping("/add${className}")
-    public ResponseEntity add${className}(@RequestBody @Valid ${className}AddReqDto reqDto) {
-        try {
-            ${className}AddRspDto response = ${classname}Service.add${className}(reqDto);
-            return ResponseHelper.success(response);
-        } catch (BizException e) {
-            log.error("========新增${comments}发生异常，异常信息：{}", e.getMessage());
-            return ResponseHelper.fail(e.getMessage());
-        } catch (Exception e) {
-            log.error("========新增${comments}发生系统异常，异常信息：{}", e.getMessage());
-            return ResponseHelper.fail(${bizPrefix}BizErrorEnum.SYSTEM_ERROR.getMessage());
-        }
+
+    @ApiOperation(value = "新增${comments}")
+    @PostMapping("/add")
+    public JsonRsp<Void> add${className}(@RequestBody @Valid ${className}AddReqDto reqDto) {
+        ${classname}Service.add${className}(reqDto);
+        return JsonRspHelper.success();
     }
 
-    /**
-     * @description : 修改${comments}
-     * @author : ${author}
-     * @date : ${datetime}
-     * @param reqDto
-     * @return : com.shsc.framework.common.model.ResponseEntity
-     **/
-    @ApiOperation(value = "修改${comments}", httpMethod = HttpConstant.PUT, response = ${className}ModRspDto.class, notes = "修改${comments}")
-    @PutMapping("/mod${className}")
-    public ResponseEntity mod${className}(@RequestBody @Valid ${className}ModReqDto reqDto) {
-        try {
-            ${className}ModRspDto response = ${classname}Service.mod${className}(reqDto);
-            return ResponseHelper.success(response);
-        } catch (BizException e) {
-            log.error("========修改${comments}发生异常，异常信息：{}", e.getMessage());
-            return ResponseHelper.fail(e.getMessage());
-        } catch (Exception e) {
-            log.error("========修改${comments}发生系统异常，异常信息：{}", e.getMessage());
-            return ResponseHelper.fail(${bizPrefix}BizErrorEnum.SYSTEM_ERROR.getMessage());
-        }
+
+    @ApiOperation(value = "修改${comments}")
+    @PostMapping("/mod")
+    public JsonRsp<Void> mod${className}(@RequestBody @Valid ${className}ModReqDto reqDto) {
+        ${classname}Service.mod${className}(reqDto);
+        return JsonRspHelper.success();
+
     }
 
-    /**
-     * @description : 删除${comments}
-     * @author : ${author}
-     * @date : ${datetime}
-     * @param reqDto
-     * @return : com.shsc.framework.common.model.ResponseEntity
-     **/
-    @ApiOperation(value = "删除${comments}", httpMethod = HttpConstant.DELETE, response = ${className}DelRspDto.class, notes = "删除${comments}")
-    @DeleteMapping("/del${className}")
-    public ResponseEntity del${className}(@RequestBody @Valid ${className}DelReqDto reqDto) {
-        try {
-            ${className}DelRspDto response = ${classname}Service.del${className}(reqDto);
-            return ResponseHelper.success(response);
-        } catch (BizException e) {
-            log.error("========删除${comments}发生异常，异常信息：{}", e.getMessage());
-            return ResponseHelper.fail(e.getMessage());
-        } catch (Exception e) {
-            log.error("========删除${comments}发生系统异常，异常信息：{}", e.getMessage());
-            return ResponseHelper.fail(${bizPrefix}BizErrorEnum.SYSTEM_ERROR.getMessage());
-        }
+
+    @ApiOperation(value = "删除${comments}")
+    @PostMapping("/del")
+    public JsonRsp<Void> del${className}(@RequestBody @Valid ${className}DelReqDto reqDto) {
+        ${classname}Service.del${className}(reqDto);
+        return JsonRspHelper.success();
+
     }
 
-    /**
-     * @description : 根据主键ID查询${comments}
-     * @author : ${author}
-     * @date : ${datetime}
-     * @param id
-     * @return : com.shsc.framework.common.model.ResponseEntity
-     **/
-    @ApiOperation(value = "根据主键ID查询${comments}", httpMethod = HttpConstant.GET, response = ${className}DetailRspDto.class, notes = "根据主键ID查询${comments}")
-    @GetMapping("/query${className}ById")
-    public ResponseEntity query${className}ById(@RequestParam Long id) {
-        try {
-            ${className}DetailRspDto repDto = ${classname}Service.query${className}ById(id);
-            return ResponseHelper.success(repDto);
-        } catch (Exception e) {
-            log.error("========根据主键ID查询${comments}发生系统异常，异常信息：{}", e.getMessage());
-            return ResponseHelper.fail(${bizPrefix}BizErrorEnum.SYSTEM_ERROR.getMessage());
-        }
+    @ApiOperation(value = "根据主键ID查询${comments}")
+    @GetMapping("/queryById")
+    public JsonRsp<${className}RspVo> query${className}ById(@RequestParam Integer id) {
+        ${className}RspVo repDto = ${classname}Service.query${className}ById(id);
+        return JsonRspHelper.success(repDto);
+
     }
 
-    /**
-     * @description : 根据${comments}ID查询${comments}
-     * @author : ${author}
-     * @date : ${datetime}
-     * @param ${classname}Id
-     * @return : com.shsc.framework.common.model.ResponseEntity
-     **/
-    @ApiOperation(value = "根据${comments}ID查询${comments}", httpMethod = HttpConstant.GET, response = ${className}DetailRspDto.class, notes = "根据${comments}ID查询${comments}")
-    @GetMapping("/query${className}By${className}Id")
-    public ResponseEntity query${className}By${className}Id(@RequestParam String ${classname}Id) {
-        try {
-            ${className}DetailRspDto repDto = ${classname}Service.query${className}By${className}Id(${classname}Id);
-            return ResponseHelper.success(repDto);
-        } catch (Exception e) {
-            log.error("========根据${comments}ID查询${comments}发生系统异常，异常信息：{}", e.getMessage());
-            return ResponseHelper.fail(${bizPrefix}BizErrorEnum.SYSTEM_ERROR.getMessage());
-        }
-    }
 
-    /**
-     * @description : ${comments}分页列表查询
-     * @author : ${author}
-     * @date : ${datetime}
-     * @param reqDto
-     * @return : com.shsc.framework.common.model.ResponseEntity
-     **/
-    @ApiOperation(value = "${comments}分页列表查询", httpMethod = HttpConstant.POST, response = ${className}PageRspDto.class, notes = "${comments}分页列表查询")
+    @ApiOperation(value = "${comments}分页列表查询")
     @PostMapping("/pageList")
-    @ShscLog
-    public ResponseEntity pageList(@RequestBody ${className}PageReqDto reqDto) {
-        try {
-            Page<${className}PageRspDto> rspDto = ${classname}Service.query${className}ListByPage(reqDto);
-            return ResponseHelper.success(rspDto);
-        } catch (Exception e) {
-            log.error("========${comments}分页列表查询发生系统异常，异常信息：{}", e.getMessage());
-            return ResponseHelper.fail(${bizPrefix}BizErrorEnum.SYSTEM_ERROR.getMessage());
-        }
+    public JsonRsp<Page<${className}PageRspVo>> pageList(@RequestBody ${className}PageReqDto reqDto) {
+        Page<${className}PageRspVo> rspDto = ${classname}Service.query${className}ListByPage(reqDto);
+        return JsonRspHelper.success(rspDto);
+
+    }
+
+    @ApiOperation(value = "批量更新${comments}")
+    @PostMapping("/batchUpdate")
+    public JsonRsp<Void> add${className}(@RequestBody @Valid List<${className}ModReqDto> reqDtos) throws Exception{
+        ${classname}Service.batchUpdate(reqDtos);
+        return JsonRspHelper.success();
     }
 }

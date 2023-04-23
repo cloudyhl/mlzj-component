@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 #end
 
 /**
- * @author : ${author}
- * @date : ${datetime}
- **/
+ * @author ${author}
+ * @date ${datetime}
+ */
 @Data
 @TableName("${tableName}")
 public class ${className}Po implements Serializable {

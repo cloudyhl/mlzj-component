@@ -2,6 +2,7 @@ package com.mlzj.component.mq.common.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @author yhl
@@ -18,14 +19,16 @@ public enum MessageModeEnum {
     QUEUE(2, "队列模式"),
     SEND(3, "发送者模式");
 
+
     /**
      * 模式
      */
-    private Integer mode;
+    private final Integer mode;
 
     /**
      * 描述
      */
-    private String desc;
+    private final String desc;
+
 
 }

@@ -12,7 +12,7 @@ var vm = new Vue({
 	el:'#rrapp',
 	data:{
 		main:"main.html",
-        navTitle:"蜀海欢迎页"
+        navTitle:"欢迎页"
 	},
     methods: {
         donate: function () {

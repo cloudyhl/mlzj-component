@@ -23,6 +23,7 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 
 /**
  * 代码生成器   工具类
@@ -44,13 +45,8 @@ public class GenUtils {
         templates.add("template/DelReqDto.java.vm");
         templates.add("template/ModReqDto.java.vm");
         templates.add("template/PageReqDto.java.vm");
-        templates.add("template/AddRspDto.java.vm");
-        templates.add("template/ModRspDto.java.vm");
-        templates.add("template/DelRspDto.java.vm");
-        templates.add("template/DetailRspDto.java.vm");
-        templates.add("template/PageRspDto.java.vm");
-        templates.add("template/Dto2PoConvert.java.vm");
-        templates.add("template/Po2DtoConvert.java.vm");
+        templates.add("template/PageRspVo.java.vm");
+        templates.add("template/RspVo.java.vm");
         return templates;
     }
 
@@ -61,6 +57,7 @@ public class GenUtils {
                                      List<Map<String, String>> columns, ZipOutputStream zip) {
         //配置信息
         Configuration config = getConfig();
+        VelocityEngine ve = new VelocityEngine();
         boolean hasBigDecimal = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
@@ -116,7 +113,7 @@ public class GenUtils {
         prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
         Velocity.init(prop);
         String mainPath = config.getString("mainPath" );
-        mainPath = StringUtils.isBlank(mainPath) ? "com.shsc" : mainPath;
+        mainPath = StringUtils.isBlank(mainPath) ? "com.mlzj" : mainPath;
         //封装模板数据
         Map<String, Object> map = new HashMap<>();
         map.put("tableName", tableEntity.getTableName());
@@ -132,12 +129,12 @@ public class GenUtils {
         map.put("moduleName", config.getString("moduleName" ));
         map.put("author", config.getString("author" ));
         map.put("email", config.getString("email" ));
-        map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
+        map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_PATTERN));
         map.put("tableObj", config.getString("tableObj" ));
         map.put("objPrefix", config.getString("objPrefix" ));
         map.put("bizPrefix", config.getString("bizPrefix" ));
+        map.put("dateCfg", config.getString("dateCfg" ));
         VelocityContext context = new VelocityContext(map);
-
         //获取模板列表
         List<String> templates = getTemplates();
         for (String template : templates) {
@@ -148,7 +145,7 @@ public class GenUtils {
 
             try {
                 //添加到zip
-                zip.putNextEntry(new ZipEntry(getFileName(template, tableEntity.getClassName(), config.getString("package" ), config.getString("moduleName" ))));
+                zip.putNextEntry(new ZipEntry(getFileName(template, tableEntity.getClassName(), config.getString("package" ), config.getString("moduleName" ),tableEntity.getClassname())));
                 IOUtils.write(sw.toString(), zip, "UTF-8" );
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
@@ -190,7 +187,7 @@ public class GenUtils {
     /**
      * 获取文件名
      */
-    public static String getFileName(String template, String className, String packageName, String moduleName) {
+    public static String getFileName(String template, String className, String packageName, String moduleName,String classname) {
         String packagePath = "main" + File.separator + "java" + File.separator;
         if (StringUtils.isNotBlank(packageName)) {
             packagePath += packageName.replace(".", File.separator) + File.separator;
@@ -217,66 +214,30 @@ public class GenUtils {
         }
 
         if (template.contains("AddReqDto.java.vm" )) {
-            return packagePath + "dto" + File.separator + moduleName+ File.separator + "request" + File.separator + className + "AddReqDto.java";
+            return packagePath + "dto" + File.separator + classname+ File.separator + "request" + File.separator + className + "AddReqDto.java";
         }
 
         if (template.contains("ModReqDto.java.vm" )) {
-            return packagePath + "dto" + File.separator + moduleName+ File.separator + "request" + File.separator + className + "ModReqDto.java";
+            return packagePath + "dto" + File.separator + classname+ File.separator + "request" + File.separator + className + "ModReqDto.java";
         }
 
         if (template.contains("DelReqDto.java.vm" )) {
-            return packagePath + "dto" + File.separator + moduleName+ File.separator + "request" + File.separator + className + "DelReqDto.java";
+            return packagePath + "dto" + File.separator + classname+ File.separator + "request" + File.separator + className + "DelReqDto.java";
         }
 
         if (template.contains("PageReqDto.java.vm" )) {
-            return packagePath + "dto" + File.separator + moduleName+ File.separator + "request" + File.separator + className + "PageReqDto.java";
+            return packagePath + "dto" + File.separator + classname+ File.separator + "request" + File.separator + className + "PageReqDto.java";
         }
 
-        if (template.contains("AddRspDto.java.vm" )) {
-            return packagePath + "dto" + File.separator + moduleName+ File.separator + "response" + File.separator + className + "AddRspDto.java";
+        if (template.contains("PageRspVo.java.vm" )) {
+            return packagePath + "vo" + File.separator + classname+ File.separator + className + "PageRspVo.java";
         }
-
-        if (template.contains("ModRspDto.java.vm" )) {
-            return packagePath + "dto" + File.separator + moduleName+ File.separator + "response" + File.separator + className + "ModRspDto.java";
+        if (template.contains("RspVo.java.vm" )) {
+            return packagePath + "vo" + File.separator + classname+ File.separator + className + "RspVo.java";
         }
-
-        if (template.contains("DelRspDto.java.vm" )) {
-            return packagePath + "dto" + File.separator + moduleName+ File.separator + "response" + File.separator + className + "DelRspDto.java";
-        }
-
-        if (template.contains("DetailRspDto.java.vm" )) {
-            return packagePath + "dto" + File.separator + moduleName+ File.separator + "response" + File.separator + className + "DetailRspDto.java";
-        }
-
-        if (template.contains("PageRspDto.java.vm" )) {
-            return packagePath + "dto" + File.separator + moduleName+ File.separator + "response" + File.separator + className + "PageRspDto.java";
-        }
-
-        if (template.contains("Dto2PoConvert.java.vm" )) {
-            return packagePath + "convert" + File.separator + className + "Dto2PoConvert.java";
-        }
-
-        if (template.contains("Po2DtoConvert.java.vm" )) {
-            return packagePath + "convert" + File.separator + className + "Po2DtoConvert.java";
-        }
-
         if (template.contains("Mapper.xml.vm" )) {
             return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
         }
-
-//        if (template.contains("menu.sql.vm" )) {
-//            return className.toLowerCase() + "_menu.sql";
-//        }
-
-//        if (template.contains("index.vue.vm" )) {
-//            return "main" + File.separator + "resources" + File.separator + "src" + File.separator + "views" + File.separator + "modules" +
-//                    File.separator + moduleName + File.separator + className.toLowerCase() + ".vue";
-//        }
-//
-//        if (template.contains("add-or-update.vue.vm" )) {
-//            return "main" + File.separator + "resources" + File.separator + "src" + File.separator + "views" + File.separator + "modules" +
-//                    File.separator + moduleName + File.separator + className.toLowerCase() + "-add-or-update.vue";
-//        }
 
         return null;
     }

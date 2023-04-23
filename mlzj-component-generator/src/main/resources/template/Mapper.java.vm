@@ -1,27 +1,32 @@
 package ${package}.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.shsc.plugin.mybatisplus.mapper.IBaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import com.shsc.tms.biz.dto.${moduleName}.request.${className}PageReqDto;
+import ${package}.dto.${moduleName}.request.*;
+
+import ${package}.vo.${moduleName}.*;
 import ${package}.entity.po.${className}Po;
 import java.util.List;
 
 /**
- * @author : ${author}
- * @date : ${datetime}
- **/
+ * @author ${author}
+ * @date ${datetime}
+ */
 @Mapper
-public interface ${className}PoMapper extends IBaseMapper<${className}Po> {
+public interface ${className}PoMapper extends BaseMapper<${className}Po> {
 
     /**
-     * @description : 分页查询${comments}
-     * @author : ${author}
-     * @date : ${datetime}
-     * @param page
-     * @param reqDto
-     * @return : java.util.List<com.shsc.tms.biz.entity.po.${className}Po>
-     **/
-    List<${className}Po> query${className}ListByPage(Page page, @Param("dto") ${className}PageReqDto reqDto);
+     * 分页查询
+     * @param page 分页对象
+     * @param reqDto 分页请求数据
+     */
+    Page<${className}PageRspVo> query${className}ListByPage(Page<${className}PageRspVo> page, @Param("dto") ${className}PageReqDto reqDto);
+
+    /**
+     *  批量更新
+     *  @param pos po的集合
+     */
+    void batchUpdate(@Param("pos") List<${className}Po> pos);
 }

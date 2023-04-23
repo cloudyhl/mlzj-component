@@ -56,7 +56,7 @@ public class SysGeneratorController {
 //			response.setContentType("application/zip; charset=UTF-8");
 
 			IOUtils.write(data, response.getOutputStream());
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 		}
