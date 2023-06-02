@@ -2,10 +2,14 @@
 package com.mlzj.component.generator.controller;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.zip.ZipOutputStream;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import com.mlzj.component.generator.service.SysGeneratorService;
+import com.mlzj.component.generator.utils.CommonUtils;
 import com.mlzj.component.generator.utils.PageUtils;
 import com.mlzj.component.generator.utils.Query;
 import com.mlzj.component.generator.utils.R;
@@ -49,16 +53,14 @@ public class SysGeneratorController {
 			byte[] data = sysGeneratorService.generatorCode(tables.split(","));
 
 			response.reset();
-			response.setHeader("Content-Disposition", "attachment; filename=shuhai_code.zip");
-//			response.setHeader("Content-Disposition", "attachment; filename=\"shuhai\""+tables+"\".zip\"");
+			response.setHeader("Content-Disposition", "attachment; filename=mlzj_code.zip");
 			response.addHeader("Content-Length", "" + data.length);
 			response.setContentType("application/octet-stream; charset=UTF-8");
-//			response.setContentType("application/zip; charset=UTF-8");
 
 			IOUtils.write(data, response.getOutputStream());
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
 		}
 	}
+
 }

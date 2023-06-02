@@ -1,7 +1,12 @@
 package com.mlzj.component.generator.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 返回数据
@@ -50,5 +55,22 @@ public class R extends HashMap<String, Object> {
 	public R put(String key, Object value) {
 		super.put(key, value);
 		return this;
+	}
+
+	public static void main(String[] args) throws FileNotFoundException {
+//		String sourceFolder = "/path/to/source/folder";
+//		String outputZip = "/path/to/output/zipfile.zip";
+//		FileOutputStream fos = new FileOutputStream(outputZip);
+//		ZipOutputStream zipOut = new ZipOutputStream(fos);
+		String rootPackage = "com.mlzj.component.generator";
+		String[] packageNames = rootPackage.split("\\."); // 把根包名按照 . 分割成不同的包名
+
+		// 遍历每个包名，构造 Java 代码文件路径
+		StringBuilder javaFilePath = new StringBuilder();
+		for (String packageName : packageNames) {
+			javaFilePath.append(File.separator).append(packageName);
+		}
+		FileInputStream inputStream = new FileInputStream(javaFilePath.append(File.separator).append("config").append(File.separator).append("DbConfig.java").toString());
+		System.out.println(inputStream);
 	}
 }
