@@ -2,7 +2,7 @@ package com.component.monitor.client.utils;
 
 
 
-import com.component.monitor.client.enums.SizeEnum;
+
 import com.component.monitor.client.hardware.*;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;

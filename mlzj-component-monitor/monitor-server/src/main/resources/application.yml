@@ -1,0 +1,4 @@
+mlzj:
+  monitor:
+    server-port: 22300
+    workers: 64

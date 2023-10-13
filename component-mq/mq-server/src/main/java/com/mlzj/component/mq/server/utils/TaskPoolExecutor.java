@@ -19,7 +19,7 @@ public class TaskPoolExecutor {
 
     private TaskPoolExecutor(){}
 
-    public static ThreadPoolExecutor gerThreadPool(){
+    public static ThreadPoolExecutor getThreadPool(){
         return threadPoolExecutor;
     }
 }

@@ -37,7 +37,7 @@ public class MqServerCoreHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         MlzjMessage mlzjMessage = (MlzjMessage) msg;
         MessageProcessor messageProcess = messageProcessorFactory.getMessageProcess(mlzjMessage.getMode());
-        TaskPoolExecutor.gerThreadPool().execute(new MessageDistributeTask(mlzjMessage, messageProcess));
+        TaskPoolExecutor.getThreadPool().execute(new MessageDistributeTask(mlzjMessage, messageProcess));
     }
 
     @Override
